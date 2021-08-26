@@ -1,0 +1,20 @@
+version: '3'
+services:
+  authapp:
+    image: 'authapp_image'
+    container_name: "authapp_container"
+    ports:
+      - "${APP_PORT}:80"
+    volumes:
+     - ../.:/var/www/html
+     - ./apache.conf:/etc/apache2/apache2.conf
+     - ./php.ini:/usr/local/etc/php/php.ini
+  authdb:
+    image: 'mysql:5.7'
+    container_name: "authdb_container"
+    environment:
+          MYSQL_ROOT_PASSWORD: password
+    ports:
+      - "${DB_PORT}:3306"
+    volumes:
+      - ./database_mount:/var/lib/mysql
