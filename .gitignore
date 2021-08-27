@@ -16,3 +16,4 @@ yarn-error.log
 /docker/database_mount/*
 !/docker/database_mount/.gitignore
 /docker/.env
+/docker/envvars
