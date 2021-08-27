@@ -9,6 +9,7 @@ services:
      - ../.:/var/www/html
      - ./apache.conf:/etc/apache2/apache2.conf
      - ./php.ini:/usr/local/etc/php/php.ini
+     - ./envvars:/etc/apache2/envvars
   authdb:
     image: 'mysql:5.7'
     container_name: "authdb_container"
