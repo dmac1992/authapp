@@ -6,7 +6,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Session\Store as Session;
 
-class AuthenticationController extends Controller
+class AuthController extends Controller
 {
     /**
      * @var Request
@@ -47,7 +47,7 @@ class AuthenticationController extends Controller
      *
      * @return JsonResponse
      */
-    public function confirmRego() : JsonResponse
+    public function verify() : JsonResponse
     {
         $requestData = $this->request->json()->all();
     }

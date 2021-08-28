@@ -38,7 +38,7 @@ class RegistrationTest extends TestCase
     {
         $this->body['fname'] = "aa";
 
-        $response = $this->postJson('/register', $this->body);
+        $response = $this->postJson('/auth/register', $this->body);
 
         $response
             ->assertStatus(400)
@@ -61,7 +61,7 @@ class RegistrationTest extends TestCase
     {
         $this->body['fname'] = str_repeat("a", 15);;
 
-        $response = $this->postJson('/register', $this->body);
+        $response = $this->postJson('/auth/register', $this->body);
 
         $response
             ->assertStatus(400)
@@ -84,7 +84,7 @@ class RegistrationTest extends TestCase
     {
         $this->body['fname'] = "@^.";
 
-        $response = $this->postJson('/register', $this->body);
+        $response = $this->postJson('/auth/register', $this->body);
 
         $response
             ->assertStatus(400)
@@ -107,7 +107,7 @@ class RegistrationTest extends TestCase
     {
         $this->body['lname'] = "aa";
 
-        $response = $this->postJson('/register', $this->body);
+        $response = $this->postJson('/auth/register', $this->body);
 
         $response
             ->assertStatus(400)
@@ -130,7 +130,7 @@ class RegistrationTest extends TestCase
     {
         $this->body['lname'] = str_repeat("a", 15);;
 
-        $response = $this->postJson('/register', $this->body);
+        $response = $this->postJson('/auth/register', $this->body);
 
         $response
             ->assertStatus(400)
@@ -153,7 +153,7 @@ class RegistrationTest extends TestCase
     {
         $this->body['email'] = "oogabooga";
 
-        $response = $this->postJson('/register', $this->body);
+        $response = $this->postJson('/auth/register', $this->body);
 
         $response
             ->assertStatus(400)
@@ -174,7 +174,7 @@ class RegistrationTest extends TestCase
      */
     public function test_valid_rego_request()
     {
-        $response = $this->postJson('/register', $this->body);
+        $response = $this->postJson('/auth/register', $this->body);
 
         $response
             ->assertStatus(200)
@@ -199,7 +199,7 @@ class RegistrationTest extends TestCase
 
         $this->body['password_confirm'] = "jibberish";
 
-        $response = $this->postJson('/register', $this->body);
+        $response = $this->postJson('/auth/register', $this->body);
 
         $response
             ->assertStatus(400)
@@ -222,7 +222,7 @@ class RegistrationTest extends TestCase
     {
         $this->body['password'] = str_repeat("a!2", 2);
 
-        $response = $this->postJson('/register', $this->body);
+        $response = $this->postJson('/auth/register', $this->body);
 
         $response
             ->assertStatus(400)
@@ -244,7 +244,7 @@ class RegistrationTest extends TestCase
     {
         $this->body['password'] = str_repeat("a!#", 10);
 
-        $response = $this->postJson('/register', $this->body);
+        $response = $this->postJson('/auth/register', $this->body);
 
         $response
             ->assertStatus(400)
@@ -267,7 +267,7 @@ class RegistrationTest extends TestCase
     {
         $this->body['password'] = "danielmccarthy";
 
-        $response = $this->postJson('/register', $this->body);
+        $response = $this->postJson('/auth/register', $this->body);
 
         $response
             ->assertStatus(400)
@@ -288,7 +288,7 @@ class RegistrationTest extends TestCase
      */
     public function test_password_was_hashed()
     {
-        $this->postJson('/register', $this->body);
+        $this->postJson('/auth/register', $this->body);
 
         $user = User::where('email', $this->body['email'])->first();
 
@@ -302,7 +302,7 @@ class RegistrationTest extends TestCase
      */
     public function test_user_not_verified_before_confirmation_email_is_used()
     {
-        $this->postJson('/register', $this->body);
+        $this->postJson('/auth/register', $this->body);
 
         $user = User::where('email', $this->body['email'])->first();
 
@@ -316,13 +316,13 @@ class RegistrationTest extends TestCase
      */
     public function test_user_is_verified_after_confirmation_email_is_used()
     {
-        $this->postJson('/register', $this->body);
+        $this->postJson('/auth/register', $this->body);
 
         $user = User::where('email', $this->body['email'])->first();
 
         $token = $user['acc_verification_token'];
 
-        $this->getJson("/token${token}");
+        $this->getJson("/verify?token=${token}");
 
         $user = $user->fresh();
 
