@@ -5,6 +5,7 @@ export function getNameErrorMessage(name, type) {
     }
 
     if (!name) {
+        // return `${type} name is required, please enter one`;
         return `${type} name is required, please enter one`;
     }
 
