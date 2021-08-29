@@ -1853,7 +1853,7 @@ __webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js");
  */
 
 
-__webpack_require__(/*! ./components/Example */ "./resources/js/components/Example.js");
+__webpack_require__(/*! ./components/Index.js */ "./resources/js/components/Index.js");
 
 /***/ }),
 
@@ -1901,10 +1901,38 @@ window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 
 /***/ }),
 
-/***/ "./resources/js/components/Example.js":
-/*!********************************************!*\
-  !*** ./resources/js/components/Example.js ***!
-  \********************************************/
+/***/ "./resources/js/commonComponents/InputFieldAlert.js":
+/*!**********************************************************!*\
+  !*** ./resources/js/commonComponents/InputFieldAlert.js ***!
+  \**********************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+
+
+
+function InputFieldAlert(_ref) {
+  var message = _ref.message;
+  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("p", {
+    className: "input-field-error",
+    children: message
+  });
+}
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (InputFieldAlert);
+
+/***/ }),
+
+/***/ "./resources/js/components/Index.js":
+/*!******************************************!*\
+  !*** ./resources/js/components/Index.js ***!
+  \******************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -1914,38 +1942,302 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-dom */ "./node_modules/react-dom/index.js");
-/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+/* harmony import */ var _RegistrationPage__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./RegistrationPage */ "./resources/js/components/RegistrationPage.js");
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
 
 
 
 
 
-function Example() {
-  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
+function Index() {
+  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
     className: "container",
-    children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
-      className: "row justify-content-center",
-      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
-        className: "col-md-8",
-        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("div", {
-          className: "card",
-          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
-            className: "card-header",
-            children: "Example Component"
-          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
-            className: "card-body",
-            children: "I'm an example component!"
-          })]
-        })
-      })
-    })
+    children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_RegistrationPage__WEBPACK_IMPORTED_MODULE_2__.default, {})
   });
 }
 
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (Example);
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (Index);
 
-if (document.getElementById('example')) {
-  react_dom__WEBPACK_IMPORTED_MODULE_1__.render( /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)(Example, {}), document.getElementById('example'));
+if (document.getElementById('application')) {
+  react_dom__WEBPACK_IMPORTED_MODULE_1__.render( /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(Index, {}), document.getElementById('application'));
+}
+
+/***/ }),
+
+/***/ "./resources/js/components/RegistrationPage.js":
+/*!*****************************************************!*\
+  !*** ./resources/js/components/RegistrationPage.js ***!
+  \*****************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var _utility_formValidator__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../utility/formValidator */ "./resources/js/utility/formValidator.js");
+/* harmony import */ var _commonComponents_InputFieldAlert__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../commonComponents/InputFieldAlert */ "./resources/js/commonComponents/InputFieldAlert.js");
+/* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! lodash */ "./node_modules/lodash/lodash.js");
+/* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(lodash__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
+
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
+function _iterableToArrayLimit(arr, i) { var _i = arr == null ? null : typeof Symbol !== "undefined" && arr[Symbol.iterator] || arr["@@iterator"]; if (_i == null) return; var _arr = []; var _n = true; var _d = false; var _s, _e; try { for (_i = _i.call(arr); !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
+
+function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+
+
+
+
+
+
+
+
+function RegistrationPage() {
+  var _useState = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)({
+    value: "",
+    errorMessage: null
+  }),
+      _useState2 = _slicedToArray(_useState, 2),
+      firstName = _useState2[0],
+      setFirstName = _useState2[1];
+
+  var _useState3 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)({
+    value: "",
+    errorMessage: null
+  }),
+      _useState4 = _slicedToArray(_useState3, 2),
+      lastName = _useState4[0],
+      setLastName = _useState4[1];
+
+  var _useState5 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)({
+    value: "",
+    errorMessage: null
+  }),
+      _useState6 = _slicedToArray(_useState5, 2),
+      email = _useState6[0],
+      setEmail = _useState6[1];
+
+  var _useState7 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)({
+    value: "",
+    errorMessage: null
+  }),
+      _useState8 = _slicedToArray(_useState7, 2),
+      password = _useState8[0],
+      setPassword = _useState8[1];
+
+  var _useState9 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)({
+    value: "",
+    errorMessage: null
+  }),
+      _useState10 = _slicedToArray(_useState9, 2),
+      passwordConfirmation = _useState10[0],
+      setPasswordConfirmation = _useState10[1];
+
+  var fnameChangeHandler = function fnameChangeHandler(e) {
+    setFirstName({
+      errorMessage: _utility_formValidator__WEBPACK_IMPORTED_MODULE_1__.getNameErrorMessage(e.target.value, "first"),
+      value: e.target.value
+    });
+  };
+
+  var lnameChangeHandler = function lnameChangeHandler(e) {
+    setLastName({
+      errorMessage: _utility_formValidator__WEBPACK_IMPORTED_MODULE_1__.getNameErrorMessage(e.target.value, "last"),
+      value: e.target.value
+    });
+  };
+
+  var emailChangeHandler = function emailChangeHandler(e) {
+    setEmail({
+      errorMessage: _utility_formValidator__WEBPACK_IMPORTED_MODULE_1__.getEmailErrorMessage(e.target.value),
+      value: e.target.value
+    });
+  };
+
+  var passwordChangeHandler = function passwordChangeHandler(e) {
+    setPassword({
+      errorMessage: _utility_formValidator__WEBPACK_IMPORTED_MODULE_1__.getPasswordErrorMessage(e.target.value),
+      value: e.target.value
+    });
+  };
+
+  var passwordConfirmationChangeHandler = function passwordConfirmationChangeHandler(e) {
+    setPasswordConfirmation({
+      errorMessage: _utility_formValidator__WEBPACK_IMPORTED_MODULE_1__.getPasswordConfirmationErrorMessage(password.value, e.target.value),
+      value: e.target.value
+    });
+  };
+
+  var isFormValid = function isFormValid() {
+    return firstName.errorMessage || lastName.errorMessage || email.errorMessage || password.errorMessage || passwordConfirmation.errorMessage ? false : true;
+  };
+
+  var submitHandler = function submitHandler(e) {
+    e.preventDefault();
+
+    if (isFormValid()) {
+      alert("sending form!");
+    } else {
+      //focus first field
+      alert("form failed validation");
+    }
+  };
+
+  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("form", {
+    className: "rego",
+    onSubmit: submitHandler,
+    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("label", {
+      id: "regoFnameLabel",
+      className: "rego-label",
+      children: "First name:"
+    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("input", {
+      id: "regoFnameField",
+      className: "rego-field",
+      onChange: fnameChangeHandler,
+      value: firstName.value
+    }), firstName.errorMessage && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_commonComponents_InputFieldAlert__WEBPACK_IMPORTED_MODULE_2__.default, {
+      message: firstName.errorMessage
+    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("label", {
+      id: "regoLnameLabel",
+      className: "rego-label",
+      children: "Last name:"
+    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("input", {
+      id: "regoLnameField",
+      className: "rego-field",
+      onChange: lnameChangeHandler,
+      value: lastName.value
+    }), lastName.errorMessage && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_commonComponents_InputFieldAlert__WEBPACK_IMPORTED_MODULE_2__.default, {
+      message: lastName.errorMessage
+    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("label", {
+      id: "regoEmailLabel",
+      className: "rego-label",
+      children: "Email:"
+    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("input", {
+      id: "regoEmailField",
+      className: "rego-field",
+      value: email.value,
+      onChange: emailChangeHandler
+    }), email.errorMessage && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_commonComponents_InputFieldAlert__WEBPACK_IMPORTED_MODULE_2__.default, {
+      message: email.errorMessage
+    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("label", {
+      id: "regoPasswordLabel",
+      className: "rego-label",
+      children: "Password:"
+    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("input", {
+      id: "regoPasswordField",
+      className: "rego-field",
+      value: password.value,
+      onChange: passwordChangeHandler
+    }), password.errorMessage && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_commonComponents_InputFieldAlert__WEBPACK_IMPORTED_MODULE_2__.default, {
+      message: password.errorMessage
+    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("label", {
+      id: "regoPasswordConfirmLabel",
+      className: "rego-label",
+      children: "Confirm Password:"
+    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("input", {
+      id: "regoPasswordConfirmField",
+      className: "rego-field",
+      value: passwordConfirmation.value,
+      onChange: passwordConfirmationChangeHandler
+    }), passwordConfirmation.errorMessage && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_commonComponents_InputFieldAlert__WEBPACK_IMPORTED_MODULE_2__.default, {
+      message: passwordConfirmation.errorMessage
+    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("button", {
+      children: "submit form"
+    })]
+  });
+}
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (RegistrationPage);
+
+/***/ }),
+
+/***/ "./resources/js/utility/formValidator.js":
+/*!***********************************************!*\
+  !*** ./resources/js/utility/formValidator.js ***!
+  \***********************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "getNameErrorMessage": () => (/* binding */ getNameErrorMessage),
+/* harmony export */   "getEmailErrorMessage": () => (/* binding */ getEmailErrorMessage),
+/* harmony export */   "getPasswordErrorMessage": () => (/* binding */ getPasswordErrorMessage),
+/* harmony export */   "getPasswordConfirmationErrorMessage": () => (/* binding */ getPasswordConfirmationErrorMessage)
+/* harmony export */ });
+//return error string else void
+function getNameErrorMessage(name, type) {
+  if (type !== "last" && type !== "first") {
+    throw 'validateName expects a type argument of "first" or "last"';
+  }
+
+  if (!name) {
+    return "".concat(type, " name is required, please enter one");
+  }
+
+  if (name.length < 3) {
+    return "".concat(type, " name is too short! please enter a longer one");
+  }
+
+  if (name.length > 14) {
+    return "".concat(type, " name is too long! please enter a shorter one");
+  }
+
+  if (!/^[a-zA-Z]+$/.test(name)) {
+    return "".concat(type, " name contains invalid characters, please use alphabetical characters only");
+  }
+
+  return null;
+}
+function getEmailErrorMessage(email) {
+  if (!email) {
+    return "email is required, please enter one";
+  }
+
+  if (!/\S+@\S+\.\S+/.test(email)) {
+    return "email is invalid! please enter a valid email address";
+  }
+
+  return null;
+}
+function getPasswordErrorMessage(password) {
+  if (!password) {
+    return "password is required, please enter one";
+  }
+
+  if (password.length < 7) {
+    return "password is too short!, should be between 7 and 30 characters";
+  }
+
+  if (password.length > 30) {
+    return "password is too long!, should be between 7 and 30 characters";
+  } //we would like password to contain at least one alphabetical (of both cases), a number and a special character
+
+
+  if (!(/[a-z]/.test(password) && /[A-Z]/.test(password) && /[0-9]/.test(password) && /[!@#$%&?]/.test(password))) {
+    return "password must contain a combination of alphabetical, numeric and special characters";
+  }
+
+  return null;
+}
+function getPasswordConfirmationErrorMessage(password, passwordConfirmation) {
+  if (!passwordConfirmation) {
+    return "password confirmation is required, please enter one";
+  }
+
+  if (passwordConfirmation !== password) {
+    return "password confirmation must be identical to your password";
+  }
+
+  return null;
 }
 
 /***/ }),
@@ -68463,6 +68755,18 @@ if (false) {} else {
 /******/ 				}
 /******/ 			}
 /******/ 			return result;
+/******/ 		};
+/******/ 	})();
+/******/ 	
+/******/ 	/* webpack/runtime/compat get default export */
+/******/ 	(() => {
+/******/ 		// getDefaultExport function for compatibility with non-harmony modules
+/******/ 		__webpack_require__.n = (module) => {
+/******/ 			var getter = module && module.__esModule ?
+/******/ 				() => (module['default']) :
+/******/ 				() => (module);
+/******/ 			__webpack_require__.d(getter, { a: getter });
+/******/ 			return getter;
 /******/ 		};
 /******/ 	})();
 /******/ 	
