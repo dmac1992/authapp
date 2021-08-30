@@ -1,5 +1,5 @@
 #!/bin/bash
-cd ../docker 
+cd ../docker
 USERNAME=$(whoami)
 
 #envvars file is used by apache when selecting what service user to run the apache process as.

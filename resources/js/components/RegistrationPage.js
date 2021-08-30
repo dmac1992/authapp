@@ -23,6 +23,7 @@ function RegistrationPage() {
         value: "",
         errorMessage: null,
     });
+    const [isLoading, setIsLoading] = useState(false);
 
     const fnameChangeHandler = (e) => {
         setFirstName({
@@ -69,26 +70,58 @@ function RegistrationPage() {
     };
 
     const isFormValid = () => {
-        return (
-            firstName.errorMessage ||
+        return firstName.errorMessage ||
             lastName.errorMessage ||
             email.errorMessage ||
             password.errorMessage ||
             passwordConfirmation.errorMessage
-        )
             ? false
             : true;
+    };
+
+    const buildRequest = () => {
+        return JSON.stringify({
+            firstName: firstName.value,
+            lastName: lastName.value,
+            email: email.value,
+            password: password.value,
+            passwordConfirmation: passwordConfirmation.value,
+        });
     };
 
     const submitHandler = (e) => {
         e.preventDefault();
         if (isFormValid()) {
-            alert("sending form!");
+            setIsLoading(true);
+            fetch("/api/auth/register", {
+                body: buildRequest(),
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            })
+                .then((response) => {
+                    return response.json();
+                })
+                .then((data) => {
+                    //global state = page / user
+                    //navigate page based on global state
+                    console.log(data);
+                })
+                .catch();
+            setIsLoading(false);
         } else {
             //focus first field
             alert("form failed validation");
         }
     };
+
+    const handleResponse = (data) => {};
+
+    if (isLoading) {
+        return <h1>Loading . . .</h1>;
+    }
+
     return (
         <form className="rego" onSubmit={submitHandler}>
             <label id="regoFnameLabel" className="rego-label">

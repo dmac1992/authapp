@@ -1978,9 +1978,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var _utility_formValidator__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../utility/formValidator */ "./resources/js/utility/formValidator.js");
 /* harmony import */ var _commonComponents_InputFieldAlert__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../commonComponents/InputFieldAlert */ "./resources/js/commonComponents/InputFieldAlert.js");
-/* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! lodash */ "./node_modules/lodash/lodash.js");
-/* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(lodash__WEBPACK_IMPORTED_MODULE_3__);
-/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
 function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
 
 function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
@@ -1992,7 +1990,6 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
 function _iterableToArrayLimit(arr, i) { var _i = arr == null ? null : typeof Symbol !== "undefined" && arr[Symbol.iterator] || arr["@@iterator"]; if (_i == null) return; var _arr = []; var _n = true; var _d = false; var _s, _e; try { for (_i = _i.call(arr); !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
 
 function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
-
 
 
 
@@ -2041,6 +2038,11 @@ function RegistrationPage() {
       passwordConfirmation = _useState10[0],
       setPasswordConfirmation = _useState10[1];
 
+  var _useState11 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false),
+      _useState12 = _slicedToArray(_useState11, 2),
+      isLoading = _useState12[0],
+      setIsLoading = _useState12[1];
+
   var fnameChangeHandler = function fnameChangeHandler(e) {
     setFirstName({
       errorMessage: _utility_formValidator__WEBPACK_IMPORTED_MODULE_1__.getNameErrorMessage(e.target.value, "first"),
@@ -2080,76 +2082,108 @@ function RegistrationPage() {
     return firstName.errorMessage || lastName.errorMessage || email.errorMessage || password.errorMessage || passwordConfirmation.errorMessage ? false : true;
   };
 
+  var buildRequest = function buildRequest() {
+    return JSON.stringify({
+      firstName: firstName.value,
+      lastName: lastName.value,
+      email: email.value,
+      password: password.value,
+      passwordConfirmation: passwordConfirmation.value
+    });
+  };
+
   var submitHandler = function submitHandler(e) {
     e.preventDefault();
 
     if (isFormValid()) {
-      alert("sending form!");
+      setIsLoading(true);
+      fetch("/api/auth/register", {
+        body: buildRequest(),
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        }
+      }).then(function (response) {
+        return response.json();
+      }).then(function (data) {
+        //global state = page / user
+        //navigate page based on global state
+        console.log(data);
+      })["catch"]();
+      setIsLoading(false);
     } else {
       //focus first field
       alert("form failed validation");
     }
   };
 
-  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("form", {
+  var handleResponse = function handleResponse(data) {};
+
+  if (isLoading) {
+    return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("h1", {
+      children: "Loading . . ."
+    });
+  }
+
+  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("form", {
     className: "rego",
     onSubmit: submitHandler,
-    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("label", {
+    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("label", {
       id: "regoFnameLabel",
       className: "rego-label",
       children: "First name:"
-    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("input", {
+    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("input", {
       id: "regoFnameField",
       className: "rego-field",
       onChange: fnameChangeHandler,
       value: firstName.value
-    }), firstName.errorMessage && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_commonComponents_InputFieldAlert__WEBPACK_IMPORTED_MODULE_2__.default, {
+    }), firstName.errorMessage && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_commonComponents_InputFieldAlert__WEBPACK_IMPORTED_MODULE_2__.default, {
       message: firstName.errorMessage
-    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("label", {
+    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("label", {
       id: "regoLnameLabel",
       className: "rego-label",
       children: "Last name:"
-    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("input", {
+    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("input", {
       id: "regoLnameField",
       className: "rego-field",
       onChange: lnameChangeHandler,
       value: lastName.value
-    }), lastName.errorMessage && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_commonComponents_InputFieldAlert__WEBPACK_IMPORTED_MODULE_2__.default, {
+    }), lastName.errorMessage && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_commonComponents_InputFieldAlert__WEBPACK_IMPORTED_MODULE_2__.default, {
       message: lastName.errorMessage
-    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("label", {
+    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("label", {
       id: "regoEmailLabel",
       className: "rego-label",
       children: "Email:"
-    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("input", {
+    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("input", {
       id: "regoEmailField",
       className: "rego-field",
       value: email.value,
       onChange: emailChangeHandler
-    }), email.errorMessage && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_commonComponents_InputFieldAlert__WEBPACK_IMPORTED_MODULE_2__.default, {
+    }), email.errorMessage && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_commonComponents_InputFieldAlert__WEBPACK_IMPORTED_MODULE_2__.default, {
       message: email.errorMessage
-    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("label", {
+    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("label", {
       id: "regoPasswordLabel",
       className: "rego-label",
       children: "Password:"
-    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("input", {
+    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("input", {
       id: "regoPasswordField",
       className: "rego-field",
       value: password.value,
       onChange: passwordChangeHandler
-    }), password.errorMessage && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_commonComponents_InputFieldAlert__WEBPACK_IMPORTED_MODULE_2__.default, {
+    }), password.errorMessage && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_commonComponents_InputFieldAlert__WEBPACK_IMPORTED_MODULE_2__.default, {
       message: password.errorMessage
-    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("label", {
+    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("label", {
       id: "regoPasswordConfirmLabel",
       className: "rego-label",
       children: "Confirm Password:"
-    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("input", {
+    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("input", {
       id: "regoPasswordConfirmField",
       className: "rego-field",
       value: passwordConfirmation.value,
       onChange: passwordConfirmationChangeHandler
-    }), passwordConfirmation.errorMessage && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_commonComponents_InputFieldAlert__WEBPACK_IMPORTED_MODULE_2__.default, {
+    }), passwordConfirmation.errorMessage && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_commonComponents_InputFieldAlert__WEBPACK_IMPORTED_MODULE_2__.default, {
       message: passwordConfirmation.errorMessage
-    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("button", {
+    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("button", {
       children: "submit form"
     })]
   });
@@ -2180,6 +2214,7 @@ function getNameErrorMessage(name, type) {
   }
 
   if (!name) {
+    // return `${type} name is required, please enter one`;
     return "".concat(type, " name is required, please enter one");
   }
 
@@ -68755,18 +68790,6 @@ if (false) {} else {
 /******/ 				}
 /******/ 			}
 /******/ 			return result;
-/******/ 		};
-/******/ 	})();
-/******/ 	
-/******/ 	/* webpack/runtime/compat get default export */
-/******/ 	(() => {
-/******/ 		// getDefaultExport function for compatibility with non-harmony modules
-/******/ 		__webpack_require__.n = (module) => {
-/******/ 			var getter = module && module.__esModule ?
-/******/ 				() => (module['default']) :
-/******/ 				() => (module);
-/******/ 			__webpack_require__.d(getter, { a: getter });
-/******/ 			return getter;
 /******/ 		};
 /******/ 	})();
 /******/ 	

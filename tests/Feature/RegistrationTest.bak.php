@@ -20,11 +20,11 @@ class RegistrationTest extends TestCase
     public function setUp(): void
     {
         $this->body = [
-            'firstName'  => 'daniel',
-            'lastName'  => 'mccarthy',
+            'fname'  => 'daniel',
+            'lname'  => 'mccarthy',
             'email'  => 'dmccarthy2012@hotmail.co.uk`',
             'password'  => 'muhPassword123!',
-            'passwordConfirmation'  => 'muhPassword123!'
+            'password-confirm'  => 'muhPassword123!'
         ];
 
         parent::setUp();
@@ -45,7 +45,8 @@ class RegistrationTest extends TestCase
             ->assertJson([
                 'errors' => [
                     [
-                        'firstName' => [ 'first name is too short! please enter a longer one']
+                        'message' => 'first name is too short! please enter a longer one',
+                        'field'   => 'fname'
                     ]
                 ]
             ]);
