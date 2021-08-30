@@ -18,6 +18,6 @@
         </style>
     </head>
     <body>
-        <p><a href="https://authapp.danielmccarthy.xyz/api/auth/verify?id={{id}}&token={{token}}">Please click me to confirm registration<a></p>
+        <p><a href="https://authapp.danielmccarthy.xyz/api/auth/verify?id={{$id}}&token={{$token}}">Please click me to confirm registration<a></p>
     </body>
 </html>

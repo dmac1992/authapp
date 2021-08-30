@@ -9,6 +9,8 @@ class User extends Model
 {
     use HasFactory;
 
+    protected $guarded = [];
+
     public function setPasswordAttribute($password)
     {
         $this->attributes['password'] = bcrypt($password);
@@ -24,7 +26,7 @@ class User extends Model
         return [
             "firstName" => $this->attributes['firstName'],
             "lastName"  =>  $this->attributes['lastName'],
-            "email"  =>  $this->attributes['email'].
+            "email"  =>  $this->attributes['email']
         ];
     }
 }

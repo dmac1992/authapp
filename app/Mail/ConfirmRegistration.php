@@ -36,7 +36,7 @@ class ConfirmRegistration extends Mailable
     public function build()
     {
         return $this->view(
-            'view.email.rego',
+            'email.rego',
             ["token" => $this->user['verificationToken'], "id" => $this->user["id"]]
         );
     }
