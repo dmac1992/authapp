@@ -50,6 +50,8 @@ class AuthenticationController extends Controller
         $email = $this->request->input("email");
         $password = $this->request->input("password");
 
+        //TODO - validate input
+
         $userToBeLoggedIn = User::where("email", $email );
 
         if (Hash::check($password, $userToBeLoggedIn['password'])) {
@@ -60,7 +62,7 @@ class AuthenticationController extends Controller
             ], 200);
        } else {
             return response()->json([
-                "notification" =>  "Incorrect credentials",
+                "notification" =>  "Incorrect credentials, please try again",
             ], 400);
        }
 
@@ -78,19 +80,20 @@ class AuthenticationController extends Controller
 
         $token = $this->request->input("token");
         $id = $this->request->input("id");
-
         $userRequestingVerification = User::find($id);
 
         if ($userRequestingVerification['verificationToken'] === $token) {
-            $userRequestingVerification->emailVerifiedAt(Carbon::now());
+            $userRequestingVerification->emailVerifiedAt = Carbon::now();
+            $userRequestingVerification->save();
             $this->session->put('authenticatedUser', $userRequestingVerification);
             return response()->json([
                 "navigateTo" =>  "dashboard",
                 "user"       =>  $userRequestingVerification->getFEPayload()
             ], 200);
+        } else {
+            return "BAD TOKEN";
         }
-
-        redirect('/');
+        // redirect('/');
 
     }
 
