@@ -4,9 +4,8 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
-use Illuminate\Session\Store as Session;
 
-class mustBeAuthenticated
+class MustBeAuthenticated
 {
     /**
      * Handle an incoming request.
@@ -15,9 +14,9 @@ class mustBeAuthenticated
      * @param  \Closure  $next
      * @return mixed
      */
-    public function handle(Request $request, Closure $next, Session $session)
+    public function handle(Request $request, Closure $next)
     {
-        if (!isset($session['authenticatedUser'])) {
+        if (!session('authenticatedUser')) {
             return response('not authenticated', 403);
         }
         return $next($request);
