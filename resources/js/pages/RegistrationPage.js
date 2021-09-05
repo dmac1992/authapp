@@ -1,26 +1,27 @@
 import React, { useState } from "react";
 import * as formValidator from "../utility/formValidator";
-import InputFieldAlert from "../commonComponents/InputFieldAlert";
+import InputFieldAlert from "../utilityComponents/InputFieldAlert";
+import registerRequest from "../requests/registerRequest";
 
-function RegistrationPage() {
+function RegistrationPage(props) {
     const [firstName, setFirstName] = useState({
-        value: "",
+        value: "daniel",
         errorMessage: null,
     });
     const [lastName, setLastName] = useState({
-        value: "",
+        value: "mccarthy",
         errorMessage: null,
     });
     const [email, setEmail] = useState({
-        value: "",
+        value: "dmccarthy2012@hotmail.co.uk ",
         errorMessage: null,
     });
     const [password, setPassword] = useState({
-        value: "",
+        value: "Bogheads16!",
         errorMessage: null,
     });
     const [passwordConfirmation, setPasswordConfirmation] = useState({
-        value: "",
+        value: "Bogheads16!",
         errorMessage: null,
     });
     const [isLoading, setIsLoading] = useState(false);
@@ -89,26 +90,12 @@ function RegistrationPage() {
         });
     };
 
-    const submitHandler = (e) => {
+    const submitHandler = async(e) => {
         e.preventDefault();
         if (isFormValid()) {
             setIsLoading(true);
-            fetch("/api/auth/register", {
-                body: buildRequest(),
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-            })
-                .then((response) => {
-                    return response.json();
-                })
-                .then((data) => {
-                    //global state = page / user
-                    //navigate page based on global state
-                    console.log(data);
-                })
-                .catch();
+            const payload = await registerRequest(buildRequest());
+            handleResponse(payload);
             setIsLoading(false);
         } else {
             //focus first field
@@ -116,7 +103,17 @@ function RegistrationPage() {
         }
     };
 
-    const handleResponse = (data) => {};
+    const handleResponse = (payload) => {
+        console.log(payload);
+        console.log(payload.notification);
+        if (payload.notification) {
+            console.log("setting notify")
+            props.setNotification(payload.notification);
+            return
+        }
+        console.log("didnt setNotify")
+        return;
+    };
 
     if (isLoading) {
         return <h1>Loading . . .</h1>;
@@ -124,6 +121,7 @@ function RegistrationPage() {
 
     return (
         <form className="rego" onSubmit={submitHandler}>
+            <h3>Registration Form</h3>
             <label id="regoFnameLabel" className="rego-label">
                 First name:
             </label>
@@ -184,7 +182,7 @@ function RegistrationPage() {
             {passwordConfirmation.errorMessage && (
                 <InputFieldAlert message={passwordConfirmation.errorMessage} />
             )}
-            <button>submit form</button>
+            <button>Register</button>
         </form>
     );
 }

@@ -17,6 +17,7 @@
         </style>
     </head>
     <body>
+        <div id="notification-portal"></div>
         <div id="application"></div>
         <script src="/js/app.js"></script>
     </body>

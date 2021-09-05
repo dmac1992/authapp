@@ -93,7 +93,6 @@ class AuthenticationController extends Controller
         } else {
             return "BAD TOKEN";
         }
-        // redirect('/');
 
     }
 
@@ -123,10 +122,13 @@ class AuthenticationController extends Controller
 
         $this->session->put("user", $newlyRegisteredUser);
 
-        Mail::to($newlyRegisteredUser)->send(new confirmRegistration($newlyRegisteredUser));
+        // try {
+        //     Mail::to($newlyRegisteredUser)->send(new confirmRegistration($newlyRegisteredUser));
+        // } catch (\Exception $e) {
+        //     //todo - return email no bueno
+        // }
 
         return response()->json([
-            "user" => $newlyRegisteredUser->getFEPayload(),
             "notification" => "Please complete registration using confirmation link in email sent to {$newlyRegisteredUser['email']}"
         ]);
 
