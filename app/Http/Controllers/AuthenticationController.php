@@ -50,24 +50,30 @@ class AuthenticationController extends Controller
         $email = $this->request->input("email");
         $password = $this->request->input("password");
 
-        //TODO - validate input
+        $validationResults = $this->validateLoginInput([
+            "email"    => $email,
+            "password" => $password
+        ]);
 
-        $userToBeLoggedIn = User::where("email", $email );
+        if ($validationResults->fails()) {
+            return response()->json([
+                "errors" =>  $validationResults->errors()->getMessages()
+            ], 400);
+        }
 
-        if (Hash::check($password, $userToBeLoggedIn['password'])) {
+        $userToBeLoggedIn = User::where("email", $email)->first();
+
+        if (isset($userToBeLoggedIn) && Hash::check($password, $userToBeLoggedIn['password'])) {
             $this->session->put('authenticatedUser', $userToBeLoggedIn);
             return response()->json([
                 "navigateTo" =>  "dashboard",
                 "user"       =>  $userToBeLoggedIn->getFEPayload()
             ], 200);
-       } else {
+        } else {
             return response()->json([
                 "notification" =>  "Incorrect credentials, please try again",
             ], 400);
-       }
-
-
-
+        }
     }
 
     /**
@@ -77,7 +83,6 @@ class AuthenticationController extends Controller
      */
     public function verify()
     {
-
         $token = $this->request->input("token");
         $id = $this->request->input("id");
         $userRequestingVerification = User::find($id);
@@ -85,16 +90,15 @@ class AuthenticationController extends Controller
         if ($userRequestingVerification['verificationToken'] === $token) {
             $userRequestingVerification->emailVerifiedAt = Carbon::now();
             $userRequestingVerification->save();
-            $this->session->put('authenticatedUser', $userRequestingVerification);
-            return response()->json([
-                "navigateTo" =>  "dashboard",
-                "user"       =>  $userRequestingVerification->getFEPayload()
-            ], 200);
+            $confirmationNotification = urlencode("Thank you for confirming registration, please log in");
+            return redirect("/?navigateTo=Login&notification=${confirmationNotification}");
         } else {
-            return "BAD TOKEN";
+            $errorNotification = urlencode("Token validation failed");
+            return redirect("/?notification=${errorNotification}");
         }
-
     }
+
+
 
     /**
      * Register new user
@@ -116,22 +120,23 @@ class AuthenticationController extends Controller
         $newlyRegisteredUser = User::create(
             array_merge(
                 $this->request->only("firstName", "lastName", "email", "password"),
-                [ "verificationToken" => bin2hex(random_bytes(12)) ]
+                ["verificationToken" => bin2hex(random_bytes(12))]
             )
         );
 
         $this->session->put("user", $newlyRegisteredUser);
 
-        // try {
-        //     Mail::to($newlyRegisteredUser)->send(new confirmRegistration($newlyRegisteredUser));
-        // } catch (\Exception $e) {
-        //     //todo - return email no bueno
-        // }
+        try {
+            Mail::to($newlyRegisteredUser)->send(new confirmRegistration($newlyRegisteredUser));
+        } catch (\Exception $e) {
+            return response()->json([
+                "notification" => "Failed, to send email please try again later"
+            ]);
+        }
 
         return response()->json([
             "notification" => "Please complete registration using confirmation link in email sent to {$newlyRegisteredUser['email']}"
         ]);
-
     }
 
     private function validateRegoInput($requestData)
@@ -168,7 +173,24 @@ class AuthenticationController extends Controller
         return Validator::make($requestData, $rules, $messages);
     }
 
-    private function sendRegistrationEmail() {
+    private function validateLoginInput($requestData)
+    {
+        $rules = [
+            'email'            => ['required', 'email'],
+            'password'         => ['required', 'min:7', 'max:30', new validPassword],
+        ];
 
+        $messages = [
+
+            'email.required' => 'email cannot be empty! please enter one',
+            'email.email'    => 'email is invalid! please enter a valid email address',
+
+            'password.required' => 'password cannot be empty! please enter one',
+            'password.max'     => 'password name is too long! please enter a longer one',
+            'password.min'     => 'password name is too short! please enter a longer one',
+
+        ];
+
+        return Validator::make($requestData, $rules, $messages);
     }
 }

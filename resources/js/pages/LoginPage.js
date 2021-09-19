@@ -1,30 +1,30 @@
-import React, { useState } from "react";
+import React from "react";
+import { useSelector, useDispatch  } from "react-redux";
 import * as formValidator from "../utility/formValidator";
 import InputFieldAlert from "../utilityComponents/InputFieldAlert";
+import loginRequest from "../requests/loginRequest";
+import {
+    setEmail,
+    setPassword,
+} from "../redux/slices/loginFormSlice";
 
 function LoginPage() {
-    const [email, setEmail] = useState({
-        value: "",
-        errorMessage: null,
-    });
-    const [password, setPassword] = useState({
-        value: "",
-        errorMessage: null,
-    });
-    const [isLoading, setIsLoading] = useState(false);
+    const dispatch = useDispatch();
+    const { email, password } =
+        useSelector((state) => state.loginForm);
 
     const emailChangeHandler = (e) => {
-        setEmail({
+        dispatch(setEmail({
             errorMessage: formValidator.getEmailErrorMessage(e.target.value),
             value: e.target.value,
-        });
+        }));
     };
 
     const passwordChangeHandler = (e) => {
-        setPassword({
+        dispatch(setPassword({
             errorMessage: formValidator.getPasswordErrorMessage(e.target.value),
             value: e.target.value,
-        });
+        }));
     };
 
     const isFormValid = () => email.errorMessage || password.errorMessage ? false : true;
@@ -39,35 +39,9 @@ function LoginPage() {
     const submitHandler = (e) => {
         e.preventDefault();
         if (isFormValid()) {
-            setIsLoading(true);
-            fetch("/api/auth/login", {
-                body: buildRequest(),
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-            })
-                .then((response) => {
-                    return response.json();
-                })
-                .then((data) => {
-                    //global state = page / user
-                    //navigate page based on global state
-                    console.log(data);
-                })
-                .catch();
-            setIsLoading(false);
-        } else {
-            //todo - focus first field
-            alert("form failed validation");
+            loginRequest(buildRequest());
         }
     };
-
-    const handleResponse = (data) => {};
-
-    if (isLoading) {
-        return <h1>Loading . . .</h1>;
-    }
 
     return (
         <form className="login-form" onSubmit={submitHandler}>

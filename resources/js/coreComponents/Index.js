@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import ReactDOM from "react-dom";
 import Header from "./Header.js";
 import { Route, HashRouter, Switch } from "react-router-dom";
@@ -7,26 +7,36 @@ import LoginPage from "../pages/LoginPage";
 import DashboardPage from "../pages/DashboardPage";
 import HomePage from "../pages/HomePage";
 import Notification from "../utilityComponents/Notification.js";
+import { Provider, useSelector } from "react-redux";
+import store from "../redux/store";
+// import history from "../utility/history.js";
+import { useHistory } from "react-router-dom";
 
 function Index() {
-    const [notification, setNotification] = useState("");
+    const history = useHistory();
+    // passing second param of empty array ensures first callback argument
+    // runs during initial render of application and never again.
+    useEffect(() => {
+        const queryParams = new URLSearchParams(window.location.search);
+        if (queryParams.get("notification")) {
+            // setNotification(queryParams.get("notification"));
+        }
+        if (queryParams.get("navigateTo")) {
+            history.push(`/${queryParams.get("navigateTo")}`);
+        }
+        //TODO - clean up browser url
+    }, []);
+
+    // const { user } = useSelector((state) => state.user);
 
     return (
         <div className="container">
             <Header />
-            {notification ? <Notification notification={notification} /> : null}
+            {/* {notification ? <Notification notification={notification} /> : null} */}
             <div id="pageContent">
                 <Switch>
                     <Route exact path="/" component={HomePage} />
-                    <Route
-                        exact
-                        path="/register"
-                        render={() => (
-                            <RegistrationPage
-                                setNotification={setNotification}
-                            />
-                        )}
-                    />
+                    <Route exact path="/register" component={RegistrationPage} />
                     <Route exact path="/login" component={LoginPage} />
                     <Route exact path="/dashboard" component={DashboardPage} />
                 </Switch>
@@ -38,9 +48,11 @@ export default Index;
 
 if (document.getElementById("application")) {
     ReactDOM.render(
-        <HashRouter history={history}>
-            <Index />
-        </HashRouter>,
+        <Provider store={store}>
+            <HashRouter>
+                <Index />
+            </HashRouter>
+        </Provider>,
         document.getElementById("application")
     );
 }

@@ -1,73 +1,63 @@
-import React, { useState } from "react";
+import React from "react";
+import { useSelector, useDispatch  } from "react-redux";
 import * as formValidator from "../utility/formValidator";
 import InputFieldAlert from "../utilityComponents/InputFieldAlert";
 import registerRequest from "../requests/registerRequest";
+import {
+    setFirstName,
+    setLastName,
+    setEmail,
+    setPassword,
+    setPasswordConfirmation,
+} from "../redux/slices/regoFormSlice";
 
-function RegistrationPage(props) {
-    const [firstName, setFirstName] = useState({
-        value: "daniel",
-        errorMessage: null,
-    });
-    const [lastName, setLastName] = useState({
-        value: "mccarthy",
-        errorMessage: null,
-    });
-    const [email, setEmail] = useState({
-        value: "dmccarthy2012@hotmail.co.uk ",
-        errorMessage: null,
-    });
-    const [password, setPassword] = useState({
-        value: "Bogheads16!",
-        errorMessage: null,
-    });
-    const [passwordConfirmation, setPasswordConfirmation] = useState({
-        value: "Bogheads16!",
-        errorMessage: null,
-    });
-    const [isLoading, setIsLoading] = useState(false);
+function RegistrationPage() {
+    const dispatch = useDispatch();
+    const { firstName, lastName, email, password, passwordConfirmation } =
+        useSelector((state) => state.regoForm);
 
     const fnameChangeHandler = (e) => {
-        setFirstName({
+        dispatch(setFirstName({
             errorMessage: formValidator.getNameErrorMessage(
                 e.target.value,
                 "first"
             ),
             value: e.target.value,
-        });
+        }));
     };
 
     const lnameChangeHandler = (e) => {
-        setLastName({
+        dispatch(setLastName({
             errorMessage: formValidator.getNameErrorMessage(
                 e.target.value,
                 "last"
             ),
             value: e.target.value,
-        });
+        }));
     };
 
     const emailChangeHandler = (e) => {
-        setEmail({
+        dispatch(setEmail({
             errorMessage: formValidator.getEmailErrorMessage(e.target.value),
             value: e.target.value,
-        });
+        }));
     };
 
     const passwordChangeHandler = (e) => {
-        setPassword({
+        dispatch(setPassword({
             errorMessage: formValidator.getPasswordErrorMessage(e.target.value),
             value: e.target.value,
-        });
+        }));
     };
 
     const passwordConfirmationChangeHandler = (e) => {
-        setPasswordConfirmation({
+        dispatch(setPasswordConfirmation({
             errorMessage: formValidator.getPasswordConfirmationErrorMessage(
                 password.value,
                 e.target.value
             ),
             value: e.target.value,
-        });
+        }));
     };
 
     const isFormValid = () => {
@@ -90,34 +80,13 @@ function RegistrationPage(props) {
         });
     };
 
-    const submitHandler = async(e) => {
+    const submitHandler = (e) => {
         e.preventDefault();
+        console.log("rego submit handler");
         if (isFormValid()) {
-            setIsLoading(true);
-            const payload = await registerRequest(buildRequest());
-            handleResponse(payload);
-            setIsLoading(false);
-        } else {
-            //focus first field
-            alert("form failed validation");
+            registerRequest(buildRequest());
         }
     };
-
-    const handleResponse = (payload) => {
-        console.log(payload);
-        console.log(payload.notification);
-        if (payload.notification) {
-            console.log("setting notify")
-            props.setNotification(payload.notification);
-            return
-        }
-        console.log("didnt setNotify")
-        return;
-    };
-
-    if (isLoading) {
-        return <h1>Loading . . .</h1>;
-    }
 
     return (
         <form className="rego" onSubmit={submitHandler}>

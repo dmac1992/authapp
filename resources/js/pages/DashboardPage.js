@@ -1,9 +1,18 @@
-import React, { useState } from "react";
+import React from "react";
+import { useSelector } from 'react-redux';
 
 function DashboardPage() {
 
+    const { user } = useSelector((state) => state.user);
+
     return (
-        <h1>DASHBOARD PAGE</h1>
+        <div>
+            <h1>DASHBOARD</h1>
+            <p>first name: {user.fname}</p>
+            <p>last name: {user.lname}</p>
+            <p>email: {user.email}</p>
+            <p>registered at: {user.registeredAt}</p>
+        </div>
     );
 }
 
