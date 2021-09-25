@@ -1,33 +1,42 @@
 import React from "react";
-import { useSelector, useDispatch  } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import * as formValidator from "../utility/formValidator";
 import InputFieldAlert from "../utilityComponents/InputFieldAlert";
 import loginRequest from "../requests/loginRequest";
-import {
-    setEmail,
-    setPassword,
-} from "../redux/slices/loginFormSlice";
+import { setNotification } from "../redux/slices/notificationSlice";
+import { setUser } from "../redux/slices/userSlice";
+import { toggleLoadState } from "../redux/slices/loadingSlice";
+import { setEmail, setPassword } from "../redux/slices/loginFormSlice";
+import { useHistory } from "react-router";
 
 function LoginPage() {
     const dispatch = useDispatch();
-    const { email, password } =
-        useSelector((state) => state.loginForm);
-
+    const { email, password } = useSelector((state) => state.loginForm);
+    const history = useHistory();
     const emailChangeHandler = (e) => {
-        dispatch(setEmail({
-            errorMessage: formValidator.getEmailErrorMessage(e.target.value),
-            value: e.target.value,
-        }));
+        dispatch(
+            setEmail({
+                errorMessage: formValidator.getEmailErrorMessage(
+                    e.target.value
+                ),
+                value: e.target.value,
+            })
+        );
     };
 
     const passwordChangeHandler = (e) => {
-        dispatch(setPassword({
-            errorMessage: formValidator.getPasswordErrorMessage(e.target.value),
-            value: e.target.value,
-        }));
+        dispatch(
+            setPassword({
+                errorMessage: formValidator.getPasswordErrorMessage(
+                    e.target.value
+                ),
+                value: e.target.value,
+            })
+        );
     };
 
-    const isFormValid = () => email.errorMessage || password.errorMessage ? false : true;
+    const isFormValid = () =>
+        email.errorMessage || password.errorMessage ? false : true;
 
     const buildRequest = () => {
         return JSON.stringify({
@@ -36,10 +45,52 @@ function LoginPage() {
         });
     };
 
-    const submitHandler = (e) => {
+    const submitHandler = async (e) => {
         e.preventDefault();
         if (isFormValid()) {
-            loginRequest(buildRequest());
+            dispatch(toggleLoadState(true));
+            const response = await loginRequest(buildRequest());
+            dispatch(toggleLoadState(false));
+            handleResponse(response);
+        }
+    };
+
+    const handleResponse = (response) => {
+        const { errors, notification, user, navigateTo, successCode } = response;
+
+        if (errors) {
+            handleFormErrors(errors);
+        }
+
+        if (notification) {
+            dispatch(setNotification(notification));
+        }
+
+        if (user) {
+            dispatch(setUser(user));
+        }
+
+        if (navigateTo) {
+            history.push(navigateTo);
+        }
+    };
+
+    const handleFormErrors = (errors) => {
+        if (errors.email) {
+            dispatch(
+                setEmail({
+                    ...email,
+                    errorMessage: errors.email,
+                })
+            );
+        }
+        if (errors.password) {
+            dispatch(
+                setPassword({
+                    ...password,
+                    errorMessage: errors.password,
+                })
+            );
         }
     };
 

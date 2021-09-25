@@ -1,4 +1,5 @@
 import React from "react";
+import { useSelector } from "react-redux";
 
 const notificationStyle = {
     color: 'purple',
@@ -7,7 +8,9 @@ const notificationStyle = {
 }
 
 
-function Notification({ notification }) {
+function Notification() {
+
+    const  notification  = useSelector(state => state.notification );
 
     return (
         <p className="app-notification" style={notificationStyle}>

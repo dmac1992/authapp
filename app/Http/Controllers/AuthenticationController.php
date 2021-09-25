@@ -64,10 +64,11 @@ class AuthenticationController extends Controller
         $userToBeLoggedIn = User::where("email", $email)->first();
 
         if (isset($userToBeLoggedIn) && Hash::check($password, $userToBeLoggedIn['password'])) {
-            $this->session->put('authenticatedUser', $userToBeLoggedIn);
+            $this->session->put('user', $userToBeLoggedIn);
             return response()->json([
-                "navigateTo" =>  "dashboard",
-                "user"       =>  $userToBeLoggedIn->getFEPayload()
+                "navigateTo"   =>  "dashboard",
+                "user"         =>  $userToBeLoggedIn->getFEPayload(),
+                "notification" => "Welcome $userToBeLoggedIn->firstName"
             ], 200);
         } else {
             return response()->json([
@@ -137,6 +138,27 @@ class AuthenticationController extends Controller
         return response()->json([
             "notification" => "Please complete registration using confirmation link in email sent to {$newlyRegisteredUser['email']}"
         ]);
+    }
+
+    /**
+     * Logout
+     *
+     * @return JsonResponse
+     */
+    public function logout()
+    {
+        if ($this->session->get("user")) {
+            $this->session->put("user", null);
+            return response()->json([
+                "notification" => "Succesfully logged out",
+                "navigateTo"   => "home"
+            ]);
+        } else {
+            return response()->json([
+                "notification" => "Cant log out if not logged in..."
+            ], 400);
+        }
+
     }
 
     private function validateRegoInput($requestData)

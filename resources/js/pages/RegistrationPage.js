@@ -1,8 +1,10 @@
 import React from "react";
-import { useSelector, useDispatch  } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import * as formValidator from "../utility/formValidator";
 import InputFieldAlert from "../utilityComponents/InputFieldAlert";
 import registerRequest from "../requests/registerRequest";
+import { toggleLoadState } from "../redux/slices/loadingSlice";
+import { setNotification } from "../redux/slices/notificationSlice";
 import {
     setFirstName,
     setLastName,
@@ -17,47 +19,61 @@ function RegistrationPage() {
         useSelector((state) => state.regoForm);
 
     const fnameChangeHandler = (e) => {
-        dispatch(setFirstName({
-            errorMessage: formValidator.getNameErrorMessage(
-                e.target.value,
-                "first"
-            ),
-            value: e.target.value,
-        }));
+        dispatch(
+            setFirstName({
+                errorMessage: formValidator.getNameErrorMessage(
+                    e.target.value,
+                    "first"
+                ),
+                value: e.target.value,
+            })
+        );
     };
 
     const lnameChangeHandler = (e) => {
-        dispatch(setLastName({
-            errorMessage: formValidator.getNameErrorMessage(
-                e.target.value,
-                "last"
-            ),
-            value: e.target.value,
-        }));
+        dispatch(
+            setLastName({
+                errorMessage: formValidator.getNameErrorMessage(
+                    e.target.value,
+                    "last"
+                ),
+                value: e.target.value,
+            })
+        );
     };
 
     const emailChangeHandler = (e) => {
-        dispatch(setEmail({
-            errorMessage: formValidator.getEmailErrorMessage(e.target.value),
-            value: e.target.value,
-        }));
+        dispatch(
+            setEmail({
+                errorMessage: formValidator.getEmailErrorMessage(
+                    e.target.value
+                ),
+                value: e.target.value,
+            })
+        );
     };
 
     const passwordChangeHandler = (e) => {
-        dispatch(setPassword({
-            errorMessage: formValidator.getPasswordErrorMessage(e.target.value),
-            value: e.target.value,
-        }));
+        dispatch(
+            setPassword({
+                errorMessage: formValidator.getPasswordErrorMessage(
+                    e.target.value
+                ),
+                value: e.target.value,
+            })
+        );
     };
 
     const passwordConfirmationChangeHandler = (e) => {
-        dispatch(setPasswordConfirmation({
-            errorMessage: formValidator.getPasswordConfirmationErrorMessage(
-                password.value,
-                e.target.value
-            ),
-            value: e.target.value,
-        }));
+        dispatch(
+            setPasswordConfirmation({
+                errorMessage: formValidator.getPasswordConfirmationErrorMessage(
+                    password.value,
+                    e.target.value
+                ),
+                value: e.target.value,
+            })
+        );
     };
 
     const isFormValid = () => {
@@ -80,11 +96,73 @@ function RegistrationPage() {
         });
     };
 
-    const submitHandler = (e) => {
+    const submitHandler = async (e) => {
         e.preventDefault();
         console.log("rego submit handler");
         if (isFormValid()) {
-            registerRequest(buildRequest());
+            dispatch(toggleLoadState(true));
+            const response = await registerRequest(buildRequest());
+            dispatch(toggleLoadState(false));
+            handleResponse(response);
+        }
+    };
+
+    const handleResponse = (response) => {
+        const { errors, notification, navigateTo } = response;
+
+        if (errors) {
+            handleFormErrors(errors);
+        }
+
+        if (notification) {
+            dispatch(setNotification(notification));
+        }
+
+        if (navigateTo) {
+            history.push(navigateTo);
+        }
+    };
+
+    const handleFormErrors = (errors) => {
+        if (errors.firstName) {
+            dispatch(
+                setFirstName({
+                    ...firstName,
+                    errorMessage: errors.firstName,
+                })
+            );
+        }
+        if (errors.lastName) {
+            dispatch(
+                setLastName({
+                    ...lastName,
+                    errorMessage: errors.lastName,
+                })
+            );
+        }
+        if (errors.email) {
+            dispatch(
+                setEmail({
+                    ...email,
+                    errorMessage: errors.email,
+                })
+            );
+        }
+        if (errors.password) {
+            dispatch(
+                setPassword({
+                    ...password,
+                    errorMessage: errors.password,
+                })
+            );
+        }
+        if (errors.passwordConfirmation) {
+            dispatch(
+                setPasswordConfirmation({
+                    ...passwordConfirmation,
+                    errorMessage: errors.passwordConfirmation,
+                })
+            );
         }
     };
 

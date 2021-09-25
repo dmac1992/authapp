@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import ReactDOM from "react-dom";
 import Header from "./Header.js";
 import { Route, HashRouter, Switch } from "react-router-dom";
@@ -7,9 +7,9 @@ import LoginPage from "../pages/LoginPage";
 import DashboardPage from "../pages/DashboardPage";
 import HomePage from "../pages/HomePage";
 import Notification from "../utilityComponents/Notification.js";
-import { Provider, useSelector } from "react-redux";
+import LoadingScreen from "../pages/LoadingScreen.js";
+import { Provider } from "react-redux";
 import store from "../redux/store";
-// import history from "../utility/history.js";
 import { useHistory } from "react-router-dom";
 
 function Index() {
@@ -27,16 +27,19 @@ function Index() {
         //TODO - clean up browser url
     }, []);
 
-    // const { user } = useSelector((state) => state.user);
-
     return (
         <div className="container">
             <Header />
-            {/* {notification ? <Notification notification={notification} /> : null} */}
+            <Notification />
+            <LoadingScreen />
             <div id="pageContent">
                 <Switch>
                     <Route exact path="/" component={HomePage} />
-                    <Route exact path="/register" component={RegistrationPage} />
+                    <Route
+                        exact
+                        path="/register"
+                        component={RegistrationPage}
+                    />
                     <Route exact path="/login" component={LoginPage} />
                     <Route exact path="/dashboard" component={DashboardPage} />
                 </Switch>

@@ -3,15 +3,14 @@ import { useSelector } from 'react-redux';
 
 function DashboardPage() {
 
-    const { user } = useSelector((state) => state.user);
+    const { firstName, lastName, email } = useSelector((state) => state.user);
 
     return (
         <div>
             <h1>DASHBOARD</h1>
-            <p>first name: {user.fname}</p>
-            <p>last name: {user.lname}</p>
-            <p>email: {user.email}</p>
-            <p>registered at: {user.registeredAt}</p>
+            <p>first name: {firstName}</p>
+            <p>last name: {lastName}</p>
+            <p>email: {email}</p>
         </div>
     );
 }
